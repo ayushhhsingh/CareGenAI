@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CareGen AI — Find the same medicine for less</title>
+<meta name="description" content="Search a branded medicine, see its salt composition, and compare every product with the identical composition by real cost per tablet." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="topbar" role="note">
+  <strong>Information tool only.</strong> CareGen AI does not diagnose, prescribe or recommend a dose.
+  Always confirm a substitution with your doctor or pharmacist.
+</div>
+
+<header class="site-header">
+  <a class="brand" href="#top">
+    <span class="brand-mark" aria-hidden="true">Rx</span>
+    <span class="brand-text">CareGen<span>AI</span></span>
+  </a>
+  <nav aria-label="Primary">
+    <a href="#search">Search</a>
+    <a href="#browse">Browse by salt</a>
+    <a href="#how">How it works</a>
+  </nav>
+  <span id="status-pill" class="pill pill-muted" title="Data source in use">checking…</span>
+</header>
+
+<main id="top">
+
+  <section class="hero" id="search">
+    <h1>Same salt. Same strength. <em>A fraction of the price.</em></h1>
+    <p class="hero-sub">
+      Type a brand name your doctor wrote — like <button type="button" class="link-chip" data-q="Dolo 650">Dolo 650</button>
+      — and CareGen AI shows every product with the <strong>identical salt composition, strength and dosage form</strong>,
+      ranked by what one tablet actually costs.
+    </p>
+
+    <form class="searchbar" id="search-form" role="search" autocomplete="off">
+      <label class="sr-only" for="q">Medicine or salt name</label>
+      <input id="q" name="q" type="search" placeholder="Enter a brand name or salt, e.g. Telma 40 or atorvastatin"
+             aria-describedby="q-help" aria-autocomplete="list" aria-controls="suggestions" />
+      <button type="submit" class="btn btn-primary">Find alternatives</button>
+      <ul id="suggestions" class="suggestions" role="listbox" hidden></ul>
+    </form>
+    <p id="q-help" class="hero-help">Try: Augmentin 625 · Pan 40 · Montek LC · Thyronorm 50 · Glycomet SR 500</p>
+
+    <div class="chips" id="quick-chips" aria-label="Popular searches"></div>
+  </section>
+
+  <section class="stats" id="stats" aria-label="Catalogue summary"></section>
+
+  <section class="panel" id="results" hidden>
+    <div id="ref-card"></div>
+
+    <div class="controls">
+      <div class="control">
+        <label for="units">Units you need</label>
+        <input id="units" type="number" min="1" max="365" value="30" />
+        <span class="control-hint">tablets / doses for the whole course</span>
+      </div>
+      <div class="control">
+        <label for="sort">Sort by</label>
+        <select id="sort">
+          <option value="unit_price">Lowest cost per unit</option>
+          <option value="savings">Biggest saving</option>
+          <option value="mrp">Lowest pack MRP</option>
+          <option value="name">Name (A–Z)</option>
+        </select>
+      </div>
+      <fieldset class="control control-filters">
+        <legend>Show only</legend>
+        <label><input type="checkbox" id="f-generic" /> Generics &amp; Jan Aushadhi</label>
+        <label><input type="checkbox" id="f-cheaper" /> Cheaper than my medicine</label>
+      </fieldset>
+    </div>
+
+    <div id="savings-banner"></div>
+    <div id="alt-list" class="alt-list"></div>
+    <div id="related-wrap"></div>
+  </section>
+
+  <section class="panel" id="how">
+    <h2>How CareGen AI decides two medicines are comparable</h2>
+    <ol class="steps">
+      <li>
+        <h3>1 · Read the composition</h3>
+        <p>Each product is stored as a list of salts with strengths, plus its dosage form —
+           <code>Amoxicillin 500mg + Clavulanic Acid 125mg, Tablet</code>.</p>
+      </li>
+      <li>
+        <h3>2 · Build a composition fingerprint</h3>
+        <p>Salts are normalised and sorted, so <em>A + B</em> and <em>B + A</em> collapse to one key.
+           Strength and form are part of the key: a 500 mg tablet never matches a 650 mg one, and a
+           sustained-release tablet never matches a plain one.</p>
+      </li>
+      <li>
+        <h3>3 · Compare cost per unit, not MRP</h3>
+        <p>Pack sizes differ, so a bigger MRP can still be the cheaper medicine. CareGen AI divides
+           MRP by pack size and ranks on that, then estimates the saving over your whole course.</p>
+      </li>
+    </ol>
+    <p class="note">
+      Products with the same active ingredient but a <strong>different strength or form</strong> are listed
+      separately and marked as not interchangeable — matching names alone never implies equivalence.
+    </p>
+  </section>
+
+  <section class="panel" id="browse">
+    <h2>Browse by active ingredient</h2>
+    <p class="note">Pick a salt to see every product built on it, cheapest per unit first.</p>
+    <div class="chips" id="salt-chips"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div>
+    <h4>Read this before you switch</h4>
+    <p>
+      Prices shown are <strong>indicative sample values for a prototype</strong>, not live MRPs, and they exclude
+      pharmacy discounts. Actual availability and price vary by pharmacy and batch. A few medicines
+      (for example thyroid, epilepsy, blood-thinning and immunosuppressant drugs) have a narrow
+      therapeutic index where switching brands should only be done under medical supervision.
+    </p>
+  </div>
+  <div>
+    <h4>Where the data comes from</h4>
+    <p id="footer-meta">Loading dataset information…</p>
+    <p>For real deployment, replace the dataset with the NPPA ceiling-price list and the
+       PMBJP (Jan Aushadhi) product price list, and record a source + timestamp per record.</p>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="../data/medicines.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
