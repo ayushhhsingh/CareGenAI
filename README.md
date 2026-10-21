@@ -9,7 +9,7 @@ from ₹0.55 to ₹2.07 per tablet depending on the label on the strip.
 
 ---
 
-## Quick start
+## Quick start.....
 
 Two ways to run it.
 
