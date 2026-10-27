@@ -11,7 +11,7 @@ from ₹0.55 to ₹2.07 per tablet depending on the label on the strip.
 
 ## Quick start.....
 
-Two ways to run it.
+Two ways to run it. 
 
 **A. Open the frontend directly** — no install, no Python. Double-click
 `frontend/index.html`. The browser loads `data/medicines.js` and computes everything locally.
